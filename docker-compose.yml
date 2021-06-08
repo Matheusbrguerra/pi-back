@@ -1,20 +1,26 @@
 version: "3"
 
 services: 
-    db:
-        image: postgres
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        ports:
-            - '5432:5432'
     app:
-        build: .
+        build:
+            dockerfile: Dockerfile
+            context: .
         depends_on:
-            - db
-        command: yarn start:dev
+            - postgres
+        environment: 
+            DATABASE_URL: postgres://user:password@postgres:5432/postgres
+            NODE_ENV: development
+            PORT: 3000
         ports: 
             - "3000:3000"
         volumes: 
             - .:/usr/app
+
+    postgres: 
+        image: postgres:alpine
+        ports:
+            - "5432:5432"
+        environment: 
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: postgres

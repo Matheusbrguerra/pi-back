@@ -9,4 +9,6 @@ COPY . .
 
 EXPOSE 3000
 
-CMD [ "yarn" , "start:dev" ]
+RUN npm run build
+
+CMD [ "npm", "run" , "start:prod" ]
